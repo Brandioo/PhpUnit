@@ -3,40 +3,31 @@
 use App\Models\Categories;
 use App\Models\Posts;
 
-class CategoryTest extends \PHPUnit\Framework\TestCase{
-    private Categories $category;
-    private Posts $post1;
-    private Posts $post2;
+class CategoryTest extends \PHPUnit\Framework\TestCase
+{
+    private $category = null;
 
-    protected function setUp() : void{
-        $this->category = new Categories;
+    protected function setUp(): void
+    {
+        $this->category = new Categories();
+    }
+
+    /** @test */
+    public function shouldReturnUserFirstName()
+    {
         $post1 = new Posts;
         $post2 = new Posts;
+        $post1->setTitle("Good Category");
+        $post1->setDescription("Lart");
 
-        $post1->setTitle("Post1");
-        $post1->setDescription("Post1 description");
+        $post2->setTitle("Good Category");
+        $post2->setDescription("Poshte");
 
-        $post2->setTitle("Post2");
-        $post2->setDescription("Post2 description");
-    }
+        $this->category->setPosts($post1);
+        $this->category->setPosts($post2);
 
-    /** @test */
-    public function shouldReturnCategoryName(){
-        $this->category->setName("Sport category");
+        $firstPost = $this->category->getPosts()[0];
 
-        $this->assertEquals($this->category->getName(), "Sport category");
-    }
-
-    /** @test */
-    public function shouldReturnPosts(){
-
-        $this->category->setPost($this->post1);
-        $this->category->setPost($this->post2);
-
-        $postList = $this->category->getPosts(); // [0 => post1, 1 => post2]
-        $firstPost = $postList[0];
-
-        $this->assertEquals($firstPost->getTilte(), $this->post1->getTilte());
-
+        $this->assertEquals($firstPost->getTitle(), $post1->getTitle());
     }
 }
